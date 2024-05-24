@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk11:alpine-slim as build
+FROM openjdk as build
 WORKDIR /workspace/app
 
 COPY mvnw .
@@ -14,7 +14,7 @@ FROM build AS vulnscan
 COPY --from=aquasec/trivy:latest /usr/local/bin/trivy /usr/local/bin/trivy
 RUN trivy rootfs --no-progress /
 
-FROM adoptopenjdk/openjdk11:alpine-slim
+FROM openjdk
 VOLUME /tmp
 ARG DEPENDENCY=/workspace/app/target/dependency
 COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib

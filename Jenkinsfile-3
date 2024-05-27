@@ -41,7 +41,7 @@ stage('Deploy') {
     }
   }
   steps {
-    sh 'echo "The application is now running"'
+    sh 'docker exec $(docker ps -q) echo "The application is now running"'
   }
 }
   }

@@ -41,7 +41,7 @@ stage('Deploy') {
   //   }
   // }
   steps {
-      sh 'docker container run --name=webapp5 owlee666666/webapp'
+      sh 'docker container run owlee666666/webapp'
   }
 }
   }

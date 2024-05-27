@@ -1,3 +1,4 @@
+# Stage 1: Build the application
 FROM openjdk as build
 WORKDIR /workspace/app
 
@@ -9,11 +10,14 @@ COPY src src
 RUN ./mvnw install -DskipTests
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
-# Run vulnerability scan on build image
-FROM build AS vulnscan
-COPY --from=trivy:latest /usr/local/bin/trivy /usr/local/bin/trivy
-RUN trivy rootfs --no-progress /
+# Stage 2: Run vulnerability scan on built image
+FROM aquasec/trivy:latest AS trivy
+COPY --from=build /workspace/app/target/dependency .
 
+# Run Trivy to scan for vulnerabilities
+RUN trivy image --no-progress /workspace/app:latest
+
+# Stage 3: Final application image
 FROM openjdk
 VOLUME /tmp
 ARG DEPENDENCY=/workspace/app/target/dependency

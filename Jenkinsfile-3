@@ -14,5 +14,12 @@ pipeline {
         sh 'trivy image --no-progress --exit-code 0 --severity MEDIUM,HIGH,CRITICAL java-web-app:latest'
       }
     }
+    stage("Push") {
+      steps {
+        docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credential') {
+          sh 'docker push java-web-app:latest'
+        }
+      }
+    }
   }
 }

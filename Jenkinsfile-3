@@ -3,6 +3,11 @@ pipeline {
   options {
     buildDiscarder(logRotator(numToKeepStr: '5'))
   }
+
+  environment {
+    DOCKERHUB_CREDENTIAL = credentials('docker-hub-credential')
+  }  
+
   stages {
     stage('Build') {
       steps {
@@ -16,10 +21,14 @@ pipeline {
     }
     stage("Push") {
       steps {
-        docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credential') {
-          sh 'docker push java-web-app:latest'
-        }
+        sh 'echo  $DOCKERHUB_CREDENTIAL_PSW | docker login -u $DOCKERHUB_CREDENTIAL_USR --password-stdin'
+        sh 'docker push java-web-app:latest'
       }
+    }
+  }
+  post {
+    always {
+      sh 'docker logout'
     }
   }
 }

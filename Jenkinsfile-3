@@ -33,15 +33,15 @@ pipeline {
   }
 }
 stage('Deploy') {
-  agent {
-    docker {
-      image 'owlee666666/java-web-app:latest'
-      registryUrl 'https://registry.hub.docker.com'
-      registryCredentialsId 'docker-hub-credential'
-    }
-  }
+  // agent {
+  //   docker {
+  //     image 'owlee666666/java-web-app:latest'
+  //     registryUrl 'https://registry.hub.docker.com'
+  //     registryCredentialsId 'docker-hub-credential'
+  //   }
+  // }
   steps {
-    sh 'docker exec $(docker ps -q) echo "The application is now running"'
+      sh 'docker container run --name=webapp5 owlee666666/webapp'
   }
 }
   }

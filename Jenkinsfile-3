@@ -32,6 +32,18 @@ pipeline {
     }
   }
 }
+stage('Deploy') {
+  agent {
+    docker {
+      image 'owlee666666/java-web-app:latest'
+      registryUrl 'https://registry.hub.docker.com'
+      registryCredentialsId 'docker-hub-credential'
+    }
+  }
+  steps {
+    sh 'echo "The application is now running"'
+  }
+}
   }
   post {
     always {

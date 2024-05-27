@@ -41,7 +41,8 @@ stage('Deploy') {
   //   }
   // }
   steps {
-      sh 'docker container run owlee666666/webapp'
+      sh 'docker container stop webapp || true && docker container rm webapp || true'
+      sh 'docker container run -d --name=webapp owlee666666/webapp'
   }
 }
   }

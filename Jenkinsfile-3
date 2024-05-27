@@ -23,6 +23,7 @@ pipeline {
       steps {
         // sh 'echo  $DOCKERHUB_CREDENTIAL_PSW | docker login -u $DOCKERHUB_CREDENTIAL_USR --password-stdin'
         // sh 'docker push java-web-app:latest'
+        sh 'docker context use default'
         sh 'echo $DOCKERHUB_CREDENTIAL_PSW | docker login -u $DOCKERHUB_CREDENTIAL_USR --password-stdin'
         withDockerRegistry([ credentialsId: "docker-hub-credential", url: "https://registry.hub.docker.com" ]) {
         //   sh 'docker push java-web-app:latest'
